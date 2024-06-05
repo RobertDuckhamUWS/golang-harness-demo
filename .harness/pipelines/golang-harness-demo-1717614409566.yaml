@@ -19,13 +19,27 @@ pipeline:
           cloneCodebase: true
           execution:
             steps:
-              - step:
-                  identifier: gobuild
-                  name: go_build
-                  spec:
-                    command: go build
-                  timeout: ""
-                  type: Run
+              - parallel:
+                  - step:
+                      identifier: gobuild
+                      name: go_build
+                      spec:
+                        command: go build
+                      timeout: ""
+                      type: Run
+                  - step:
+                      type: Gitleaks
+                      name: Gitleaks_1
+                      identifier: Gitleaks_1
+                      spec:
+                        mode: orchestration
+                        config: default
+                        target:
+                          type: repository
+                          detection: auto
+                        advanced:
+                          log:
+                            level: info
               - step:
                   identifier: gotestcoverage
                   name: go_test_coverage
@@ -45,29 +59,15 @@ pipeline:
                       type: JUnit
                   timeout: ""
                   type: Run
-              - parallel:
-                  - step:
-                      type: BuildAndPushDockerRegistry
-                      name: BuildAndPushDockerRegistry_1
-                      identifier: BuildAndPushDockerRegistry_1
-                      spec:
-                        connectorRef: golangconnector
-                        repo: robertduckhamuws/golang-demo
-                        tags:
-                          - latest
-                  - step:
-                      type: OsvScanner
-                      name: OsvScanner_1
-                      identifier: OsvScanner_1
-                      spec:
-                        mode: orchestration
-                        config: default
-                        target:
-                          type: repository
-                          detection: auto
-                        advanced:
-                          log:
-                            level: info
+              - step:
+                  type: BuildAndPushDockerRegistry
+                  name: BuildAndPushDockerRegistry_1
+                  identifier: BuildAndPushDockerRegistry_1
+                  spec:
+                    connectorRef: golangconnector
+                    repo: robertduckhamuws/golang-demo
+                    tags:
+                      - latest
           platform:
             os: Linux
             arch: Amd64
@@ -75,3 +75,4 @@ pipeline:
             type: Cloud
             spec: {}
         type: CI
+        description: ""
