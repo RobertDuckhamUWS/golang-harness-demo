@@ -1,0 +1,14 @@
+inputSet:
+  name: Build_RobertDuckhamUWS_golang_harness_demo_1717614424341-push-trigger-input-set
+  identifier: Build_RobertDuckhamUWS_golang_harness_demo_1717614424341pushtriggerinputset
+  orgIdentifier: default
+  projectIdentifier: default_project
+  pipeline:
+    identifier: Build_RobertDuckhamUWS_golang_harness_demo_1717614424341
+    properties:
+      ci:
+        codebase:
+          build:
+            type: branch
+            spec:
+              branch: <+trigger.branch>
