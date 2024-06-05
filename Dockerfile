@@ -4,7 +4,7 @@ WORKDIR /app
 
 COPY main.go .
 
-COPY mod.go
+COPY mod.go .
 
 RUN go build -o hello-world .
 
