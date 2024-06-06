@@ -19,27 +19,26 @@ pipeline:
           cloneCodebase: true
           execution:
             steps:
-              - parallel:
-                  - step:
-                      identifier: gobuild
-                      name: go_build
-                      spec:
-                        command: go build
-                      timeout: ""
-                      type: Run
-                  - step:
-                      type: Gitleaks
-                      name: Gitleaks_1
-                      identifier: Gitleaks_1
-                      spec:
-                        mode: orchestration
-                        config: default
-                        target:
-                          type: repository
-                          detection: auto
-                        advanced:
-                          log:
-                            level: info
+              - step:
+                  type: Gitleaks
+                  name: Gitleaks_1
+                  identifier: Gitleaks_1
+                  spec:
+                    mode: orchestration
+                    config: default
+                    target:
+                      type: repository
+                      detection: auto
+                    advanced:
+                      log:
+                        level: info
+              - step:
+                  identifier: gobuild
+                  name: go_build
+                  spec:
+                    command: go build
+                  timeout: ""
+                  type: Run
               - step:
                   identifier: gotestcoverage
                   name: go_test_coverage
